@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/0/bee754fea0954e06b4f40084a03efd6d/artifacts
+end_time: 1675797221414
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: bee754fea0954e06b4f40084a03efd6d
+run_name: Enhanced PM10 Forecast Prophet Model
+run_uuid: bee754fea0954e06b4f40084a03efd6d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1675797218787
+status: 3
+tags: []
+user_id: hp

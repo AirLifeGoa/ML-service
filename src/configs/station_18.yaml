@@ -1,0 +1,10 @@
+prophet_model:
+  model_type: "prophet"
+  interval_width: 0.95
+  days_ahead: 240
+  sps :  10.0
+  cps :  0.25
+  sm  : 'additive'
+  ws  : 'auto'
+  plot_range : False
+  plot_pred_test : False

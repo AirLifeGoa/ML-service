@@ -1,0 +1,80 @@
+artifact_path: ''
+flavors:
+  prophet:
+    code: null
+    data: model.pr
+    model_type: Prophet
+    prophet_version: 1.1.1
+  python_function:
+    data: model.pr
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.prophet
+    python_version: 3.8.13
+mlflow_version: 2.1.1
+model_uuid: dae4dd7b191744f080bbb2a550d16354
+run_id: 7ca569e14b2d4a62bcd4fb5ed7d20634
+signature:
+  inputs: '[{"name": "ds", "type": "datetime"}, {"name": "y", "type": "double"}, {"name":
+    "floor", "type": "long"}, {"name": "t", "type": "double"}, {"name": "y_scaled",
+    "type": "double"}]'
+  outputs: '[{"name": "ds", "type": "datetime"}, {"name": "trend", "type": "double"},
+    {"name": "yhat_lower", "type": "double"}, {"name": "yhat_upper", "type": "double"},
+    {"name": "trend_lower", "type": "double"}, {"name": "trend_upper", "type": "double"},
+    {"name": "All Saints Day", "type": "double"}, {"name": "All Saints Day_lower",
+    "type": "double"}, {"name": "All Saints Day_upper", "type": "double"}, {"name":
+    "All Souls Day", "type": "double"}, {"name": "All Souls Day_lower", "type": "double"},
+    {"name": "All Souls Day_upper", "type": "double"}, {"name": "Boxing Day", "type":
+    "double"}, {"name": "Boxing Day_lower", "type": "double"}, {"name": "Boxing Day_upper",
+    "type": "double"}, {"name": "Christmas Day", "type": "double"}, {"name": "Christmas
+    Day_lower", "type": "double"}, {"name": "Christmas Day_upper", "type": "double"},
+    {"name": "Day of Ashura", "type": "double"}, {"name": "Day of Ashura_lower", "type":
+    "double"}, {"name": "Day of Ashura_upper", "type": "double"}, {"name": "Diwali",
+    "type": "double"}, {"name": "Diwali_lower", "type": "double"}, {"name": "Diwali_upper",
+    "type": "double"}, {"name": "Easter Sunday", "type": "double"}, {"name": "Easter
+    Sunday_lower", "type": "double"}, {"name": "Easter Sunday_upper", "type": "double"},
+    {"name": "Eid al-Fitr", "type": "double"}, {"name": "Eid al-Fitr_lower", "type":
+    "double"}, {"name": "Eid al-Fitr_upper", "type": "double"}, {"name": "Feast of
+    Holy Family", "type": "double"}, {"name": "Feast of Holy Family_lower", "type":
+    "double"}, {"name": "Feast of Holy Family_upper", "type": "double"}, {"name":
+    "Feast of Pentecost", "type": "double"}, {"name": "Feast of Pentecost_lower",
+    "type": "double"}, {"name": "Feast of Pentecost_upper", "type": "double"}, {"name":
+    "Feast of the Blessed Virgin", "type": "double"}, {"name": "Feast of the Blessed
+    Virgin_lower", "type": "double"}, {"name": "Feast of the Blessed Virgin_upper",
+    "type": "double"}, {"name": "Feast of the Sacrifice", "type": "double"}, {"name":
+    "Feast of the Sacrifice_lower", "type": "double"}, {"name": "Feast of the Sacrifice_upper",
+    "type": "double"}, {"name": "Fest of St. Theresa of Calcutta", "type": "double"},
+    {"name": "Fest of St. Theresa of Calcutta_lower", "type": "double"}, {"name":
+    "Fest of St. Theresa of Calcutta_upper", "type": "double"}, {"name": "Gandhi Jayanti",
+    "type": "double"}, {"name": "Gandhi Jayanti_lower", "type": "double"}, {"name":
+    "Gandhi Jayanti_upper", "type": "double"}, {"name": "Good Friday", "type": "double"},
+    {"name": "Good Friday_lower", "type": "double"}, {"name": "Good Friday_upper",
+    "type": "double"}, {"name": "Holi", "type": "double"}, {"name": "Holi_lower",
+    "type": "double"}, {"name": "Holi_upper", "type": "double"}, {"name": "Independence
+    Day", "type": "double"}, {"name": "Independence Day_lower", "type": "double"},
+    {"name": "Independence Day_upper", "type": "double"}, {"name": "Maundy Thursday",
+    "type": "double"}, {"name": "Maundy Thursday_lower", "type": "double"}, {"name":
+    "Maundy Thursday_upper", "type": "double"}, {"name": "Mawlid", "type": "double"},
+    {"name": "Mawlid_lower", "type": "double"}, {"name": "Mawlid_upper", "type": "double"},
+    {"name": "New Year''s Day", "type": "double"}, {"name": "New Year''s Day_lower",
+    "type": "double"}, {"name": "New Year''s Day_upper", "type": "double"}, {"name":
+    "Palm Sunday", "type": "double"}, {"name": "Palm Sunday_lower", "type": "double"},
+    {"name": "Palm Sunday_upper", "type": "double"}, {"name": "Republic Day", "type":
+    "double"}, {"name": "Republic Day_lower", "type": "double"}, {"name": "Republic
+    Day_upper", "type": "double"}, {"name": "additive_terms", "type": "double"}, {"name":
+    "additive_terms_lower", "type": "double"}, {"name": "additive_terms_upper", "type":
+    "double"}, {"name": "holidays", "type": "double"}, {"name": "holidays_lower",
+    "type": "double"}, {"name": "holidays_upper", "type": "double"}, {"name": "lockdown
+    1", "type": "double"}, {"name": "lockdown 1_lower", "type": "double"}, {"name":
+    "lockdown 1_upper", "type": "double"}, {"name": "lockdown 2", "type": "double"},
+    {"name": "lockdown 2_lower", "type": "double"}, {"name": "lockdown 2_upper", "type":
+    "double"}, {"name": "lockdown 3", "type": "double"}, {"name": "lockdown 3_lower",
+    "type": "double"}, {"name": "lockdown 3_upper", "type": "double"}, {"name": "lockdown
+    4", "type": "double"}, {"name": "lockdown 4_lower", "type": "double"}, {"name":
+    "lockdown 4_upper", "type": "double"}, {"name": "yearly", "type": "double"}, {"name":
+    "yearly_lower", "type": "double"}, {"name": "yearly_upper", "type": "double"},
+    {"name": "multiplicative_terms", "type": "double"}, {"name": "multiplicative_terms_lower",
+    "type": "double"}, {"name": "multiplicative_terms_upper", "type": "double"}, {"name":
+    "yhat", "type": "double"}]'
+utc_time_created: '2023-02-07 19:15:07.081822'

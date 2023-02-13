@@ -1,0 +1,15 @@
+artifact_uri: file:///./mlruns/890270002383130605/7c0025e0b6054ed49862c46bd8b43e33/artifacts
+end_time: 1675795641764
+entry_point_name: ''
+experiment_id: '890270002383130605'
+lifecycle_stage: active
+run_id: 7c0025e0b6054ed49862c46bd8b43e33
+run_name: iitgoa-hostel-3_prophet_model
+run_uuid: 7c0025e0b6054ed49862c46bd8b43e33
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1675795635800
+status: 3
+tags: []
+user_id: hp

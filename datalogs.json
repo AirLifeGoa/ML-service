@@ -1,0 +1,15 @@
+[{
+  "_id": "18",
+  "lastUpdated": {
+    "$date": {
+      "$numberLong": "1675762319463"
+    }
+  },
+  "previousTrainedTime": {
+    "$date": {
+      "$numberLong": "1675581221708"
+    }
+  },
+  "newDataPoints": 1212,
+  "__v": 0
+}]

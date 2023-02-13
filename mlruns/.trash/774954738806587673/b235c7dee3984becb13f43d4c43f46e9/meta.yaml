@@ -1,0 +1,15 @@
+artifact_uri: file:///./mlruns/774954738806587673/b235c7dee3984becb13f43d4c43f46e9/artifacts
+end_time: 1674637335471
+entry_point_name: ''
+experiment_id: '774954738806587673'
+lifecycle_stage: active
+run_id: b235c7dee3984becb13f43d4c43f46e9
+run_name: 6_prophet_model
+run_uuid: b235c7dee3984becb13f43d4c43f46e9
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1674637327308
+status: 3
+tags: []
+user_id: hp

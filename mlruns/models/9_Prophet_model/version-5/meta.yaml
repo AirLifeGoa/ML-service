@@ -1,0 +1,12 @@
+creation_timestamp: 1674190614999
+current_stage: None
+description: ''
+last_updated_timestamp: 1674190614999
+name: 9_Prophet_model
+run_id: 229ff82165bd4837bdfe4378781ab883
+run_link: ''
+source: file:///C:/Users/hp/Desktop/ML server/mlruns/608902414881782567/229ff82165bd4837bdfe4378781ab883/artifacts/model
+status: READY
+status_message: null
+user_id: null
+version: 5

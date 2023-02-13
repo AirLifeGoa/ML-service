@@ -1,0 +1,107 @@
+{
+  "openapi" : "3.0.2",
+  "info" : {
+    "title" : "AirLifeGoa Model Management Service",
+    "description" : "# Overview\nThis is an ML server service for AirLifeGoa Pollution forecaster. This Ml service APi has various features like \n ```\n 1. Time series Forecasting \n 2. Inference \n3. Auto Hyperparameter Tuning \n ```\n Most of the endpoints accept `JSON` as input and return `JSON` responses.\nAll the requests are of type HTTP. Additionally, each request contains must contain an authentication token header ` which represents the access level of the user who can manage the Ml/DL models.\n# Forecasting models \n * This API currently has 4 main models used for forecasting  \n\n ```\n 1. Prophet \n 2. LSTM \n 3. Hybrid (LSTM + Prophet) \n 4. ARIMA \n ```\n  * Each model has its own input configuration which is detailed in the model description below \n ## Prophet Model \n * In the current version of API prophet model is performing well on the pollution data. * Every input data must contain at least two columns & should be named ```d's``` and ```y``` where the timestamps column and y is the forecasting column. * In addition to this, one can also provide extra features to the model. \n \n # Errors\n  Asset configuration API uses following errors in responses which are defined as below \n  ### BadRequest\n  This response means that the server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing). To resolve this, please ensure that your syntax is correct.\n  ### NotFound\n  This client error response indicates that the server cannot find the requested resource.\n  ### InternalServerError\n  This response means that issue is with the backend side where backend server or MySQL is not working properly.\n",
+    "version" : "0.0.1"
+  },
+  "paths" : {
+    "/forecast" : {
+      "get" : {
+        "tags" : [ "Forecasting" ],
+        "description" : "This endpoint is used for training the ml models and uploading the forecasts to the database.",
+        "operationId" : "forecast_forecast_get",
+        "responses" : {
+          "200" : {
+            "description" : "Successful Response",
+            "content" : {
+              "application/json" : {
+                "schema" : { }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/inference/station/{id}" : {
+      "get" : {
+        "summary" : "Inference",
+        "tags" : [ "Inference" ],
+        "operationId" : "inference_inference_station__id__get",
+        "parameters" : [ {
+          "required" : true,
+          "schema" : {
+            "title" : "Id",
+            "type" : "integer",
+            "description": "Station ID Ex:- station 1 - Arambole"
+          },
+          "name" : "id",
+          "in" : "path"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful Response",
+            "content" : {
+              "application/json" : {
+                "schema" : { }
+              }
+            }
+          },
+          "422" : {
+            "description" : "Validation Error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "HTTPValidationError" : {
+        "title" : "HTTPValidationError",
+        "type" : "object",
+        "properties" : {
+          "detail" : {
+            "title" : "Detail",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      },
+      "ValidationError" : {
+        "title" : "ValidationError",
+        "required" : [ "loc", "msg", "type" ],
+        "type" : "object",
+        "properties" : {
+          "loc" : {
+            "title" : "Location",
+            "type" : "array",
+            "items" : {
+              "anyOf" : [ {
+                "type" : "string"
+              }, {
+                "type" : "integer"
+              } ]
+            }
+          },
+          "msg" : {
+            "title" : "Message",
+            "type" : "string"
+          },
+          "type" : {
+            "title" : "Error Type",
+            "type" : "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+creation_timestamp: 1674021356540
+current_stage: None
+description: ''
+last_updated_timestamp: 1674021356540
+name: Prophet_model
+run_id: 1a65d247008c4e78a65f4e921d8d150f
+run_link: ''
+source: file:///./mlruns/186690190099020046/1a65d247008c4e78a65f4e921d8d150f/artifacts/model
+status: READY
+status_message: null
+user_id: null
+version: 1

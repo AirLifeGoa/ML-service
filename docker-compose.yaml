@@ -1,0 +1,16 @@
+version: '2.15'
+
+services:
+    web:
+        restart: always
+        build: ./mlflow
+        image: mlflow_server
+        container_name: mlflow_server
+        ports:
+            - "5000:5000"
+        command: mlflow server --host 0.0.0.0  --default-artifact-root file:///./mlruns
+        volumes:
+            -  mlflowruns:/mlruns
+
+volumes:
+    mlflowruns:

@@ -1,0 +1,12 @@
+creation_timestamp: 1675795295069
+current_stage: None
+description: ''
+last_updated_timestamp: 1675795295069
+name: 18_Prophet_model
+run_id: d9d2982148724cd18802499602d7c6dd
+run_link: ''
+source: file:///./mlruns/808242665541249571/d9d2982148724cd18802499602d7c6dd/artifacts/model
+status: READY
+status_message: null
+user_id: null
+version: 7

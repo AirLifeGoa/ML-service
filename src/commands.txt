@@ -1,0 +1,2 @@
+mlflow server --default-artifact-root file:///./mlruns --serve-artifacts -h 0.0.0.0
+uvicorn main:alg_model_mngmt --reload --port 8000

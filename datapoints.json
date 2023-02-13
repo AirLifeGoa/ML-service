@@ -1,0 +1,48 @@
+[{
+  "_id": "1",
+  "creator": "63db8299857a6d734838cce7",
+  "admins": [
+    "63db8299857a6d734838cce7"
+  ],
+  "name": "iitgoa-hostel-2",
+  "location": {
+    "lat": 14.6967,
+    "lng": 124.48605,
+    "address": "IIT Goa Hostel 2, Farmagudi, Ponda, Goa, 403401"
+  },
+  "type": "manual",
+  "description": "data source for collecting data in iit goa hostel by students",
+  "metrics": [
+    "PM10",
+    "PM2.5",
+    "O2",
+    "Wind"
+  ],
+  "expectedFrequencySeconds": 15,
+  "expectedFrequencyType": "seconds",
+  "secondsSinceLastUpdate": 315360000,
+  "__v": 0
+},{
+  "_id": "18",
+  "creator": "63db8299857a6d734838cce7",
+  "admins": [
+    "63db8299857a6d734838cce7"
+  ],
+  "name": "iitgoa-hostel-3",
+  "location": {
+    "lat": 14.6967,
+    "lng": 124.48605,
+    "address": "IIT Goa Hostel 2, Farmagudi, Ponda, Goa, 403401"
+  },
+  "type": "manual",
+  "description": "data source for collecting data in iit goa hostel by students",
+  "metrics": [
+    "PM10",
+    "SO2",
+    "NO2"
+  ],
+  "expectedFrequencySeconds": 15,
+  "expectedFrequencyType": "seconds",
+  "secondsSinceLastUpdate": 315360000,
+  "__v": 0
+}]
