@@ -8,3 +8,14 @@ prophet_model:
   plot_range : False
   plot_pred_test : False
 
+lstm_model:
+  model_type: "lstm"
+  days_ahead: 14
+  epochs: 150
+  optimizer: "Adam"
+  loss_function: "MSE"
+  lr: 0.001
+  hidden_layers: [300, 100]
+  dropout: 0.5
+
+

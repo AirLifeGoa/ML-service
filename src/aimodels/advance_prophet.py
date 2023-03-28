@@ -13,6 +13,7 @@ import warnings
 from util.best_model import BestModel
 from util.upload_data import upload_data_to_db
 from mlflow.tracking import MlflowClient
+from matplotlib import pyplot as plt
 import mlflow
 warnings.filterwarnings('ignore')
 
@@ -35,7 +36,7 @@ class AdvanceProphet(BaseModel):
         self.test_data =  None
         self.data_columns = []
         self.station_id =station_id
-        self.station_name = station_name
+        self.datasource_name = station_name
         self.data_factory =  workflow.data_processor
 
         self.parse_config()
@@ -55,15 +56,15 @@ class AdvanceProphet(BaseModel):
         self.test_data  = test_data
 
         try: 
-            exp_id = mlflow.create_experiment(f"Pollotion_{datetime.now()}_Prophet_models")
+            exp_id = mlflow.create_experiment(f"{self.datasource_name} - Forecast Models")
         except:
-            exp_id = mlflow.get_experiment_by_name(f"Pollotion_{datetime.now()}_Prophet_models")
+            exp_id = mlflow.get_experiment_by_name(f"{self.datasource_name} - Forecast Models").experiment_id
 
         print(exp_id)
         # print(exp_id.__dict__["_experiment_id"])
         # for station_id in range(1,20):
         #Num prediction
-        n_pred = 240
+        # n_pred = 240
         
         # self.data_columns = test_data.columns
         # print(self.data_columns)
@@ -71,7 +72,7 @@ class AdvanceProphet(BaseModel):
         changepoints, holidays = self.data_factory.holiday_changepoints_build()
     
         #Run model and produce results
-        mlflow.start_run(experiment_id=exp_id, run_name=f"{str(self.station_name)}_prophet_model")
+        mlflow.start_run(experiment_id=exp_id, run_name=f"Prophet - {self.data_factory.output} - { datetime.now().replace(second=0, microsecond=0)}")
 
         self.perform_prophet(self.station_id,train_data = train_data,
                         test_data= test_data,
@@ -115,16 +116,16 @@ class AdvanceProphet(BaseModel):
             model.add_country_holidays('IN')
         
         model.fit(train_data)
-        mlflow.prophet.log_model(model, artifact_path="model", registered_model_name=f"{station_id}_Prophet_model")
+        mlflow.prophet.log_model(model, artifact_path="model", registered_model_name=f"{self.datasource_name}_{self.data_factory.output}_prophet")
       
         future_dates = model.make_future_dataframe(periods=n_pred)
         prediction = model.predict(future_dates)
         fitting_graph = plot_plotly(model, prediction)
         
-        model.plot_components(prediction).savefig('./save_plots/prophet_models/Components_of_model.png')
+        model.plot_components(prediction).savefig('./save_plots/Components_of_model.png')
         mlflow.log_artifact("./save_plots/prophet_models/Components_of_model.png",artifact_path="plots")
 
-        model.plot(prediction).savefig("./save_plots/prophet_models/predictions_of_model.png")
+        model.plot(prediction).savefig("./save_plots/predictions_of_model.png")
         mlflow.log_artifact("./save_plots/prophet_models/predictions_of_model.png",artifact_path="plots")
 
         return prediction, fitting_graph
@@ -155,7 +156,7 @@ class AdvanceProphet(BaseModel):
             print(test_data[["y"]])
             upload_data = pred_org.copy()
             upload_data = upload_data.rename(columns={'yhat': 'PM10'})
-            upload_data_to_db(upload_data, "prophet_model",station_id)
+            upload_data_to_db(upload_data, "prophet",station_id)
 
             
             mod_pred = pred_org.copy()
@@ -191,7 +192,7 @@ class AdvanceProphet(BaseModel):
         # except:
         #     print('Error occured while building model!!!')
     
-    def inference(self, model: Prophet, days_ahed=50):
+    def inference(self, model: Prophet,test_inputs, days_ahed=50):
         future_dates = model.make_future_dataframe(periods=days_ahed)
         predictions = model.predict(future_dates)
 

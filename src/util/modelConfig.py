@@ -39,22 +39,24 @@ class ModelConfigClient:
         
     
     def load_model_config(self,id,model):
+        loaded = True
         try:
                 
             if not self.check_config_file(id):
                 self.create_config_file(id,model)
+                loaded = False
             
             if not self.check_model_config(id,model):
-
+                loaded = False
                 self.write_default_config(id,model)
 
             with open(f'./configs/station_{str(id)}.yaml','r') as f:
                 output = yaml.safe_load(f)
 
-            return output[model]
+            return output[model], loaded
         except:
             print("Unable to load config file")
-            return None
+            return None, None
     
 
 if __name__ == "__main__":

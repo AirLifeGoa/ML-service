@@ -1,11 +1,45 @@
-prophet_model:
-  model_name: "prophet_model"
-  sensor_name: "station_1"
-  model_params:
-    days_ahed: 14
-    sps :  10.0
-    cps :  0.25
-    sm  : 'additive'
-    ws  : 'auto'
-    plot_range : False
-    plot_pred_test : False
+# prophet_model:
+#   model_name: "prophet"
+#   sensor_name: "station_1"
+#   model_params:
+#     days_ahed: 14
+#     sps :  10.0
+#     cps :  0.25
+#     sm  : 'additive'
+#     ws  : 'auto'
+#     plot_range : False
+#     plot_pred_test : False
+
+prophet:
+  model_type: "prophet"
+  interval_width: 0.95
+  days_ahead: 1365
+  sps: 10.0
+  cps: 0.25
+  sm: "additive"
+  ws: "auto"
+  plot_range: False
+  plot_pred_test: False
+
+lstm:
+  model_type: "lstm"
+  days_ahead: 14
+  epochs: 10
+  optimizer: "Adam"
+  loss_function: "MSE"
+  lr: 0.001
+  hidden_layers: [300, 100]
+  dropout: 0.5
+
+hybridlstm:
+  model_type: "hybridlstm"
+  days_ahead: 14
+  epochs: 5
+  optimizer: "Adam"
+  loss_function: "MSE"
+  lr: 0.001
+  hidden_layers: [300, 100]
+  dropout: 0.5
+  weight_decay: 0.1
+  window_size: 8
+  batch_size: 1

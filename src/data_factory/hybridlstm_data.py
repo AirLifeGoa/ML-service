@@ -1,7 +1,8 @@
+
 from datetime import datetime,timedelta
 import pandas as pd
 
-class ProphetData:
+class HybridLSTMData:
      
     def __init__(self): 
         self.test_inputs = None
@@ -15,7 +16,7 @@ class ProphetData:
         
         df = data
         # TODO Add regressors to prophet model
-
+        print(data.head)
         # Preprocessing the data
         data = df[[output]].copy()
         data = data.dropna()
@@ -24,13 +25,20 @@ class ProphetData:
         data.reset_index(inplace=True)
 
         # Train-Test Splitting
-        train_end = datetime(2020, 6, 29)
-        test_end = datetime(2021, 2, 22)
+        # train_end = datetime(2020, 6, 29)
+        # test_end = datetime(2021, 2, 22)
+
         data_temp = data.set_index('ds')
+        split_index = int(len(data_temp)*0.85)
+        print(data_temp.head ,split_index, data_temp.index[split_index])
+        train_end = data_temp.index[split_index]
 
         train_data = data_temp[:train_end]
-        test_data = data_temp[train_end + timedelta(days=1):test_end]
+
+        print(train_end)
+        test_data = data_temp[train_end + timedelta(days=1):]
         train_data.reset_index(inplace=True)
+        test_data.reset_index(inplace=True)
 
         return train_data, test_data
 

@@ -19,8 +19,10 @@ class Workflow:
 
     def load_config(self):
         self.config_client = ModelConfigClient()
-        self.config = self.config_client.load_model_config(self.datapointId,self.model_name)
-        # print("self.config ", self.config)
+        self.config, loaded = self.config_client.load_model_config(self.datapointId,self.model_name)
+        print("self.config ", self.config)
+
+        return loaded
         # self.config = self.config[self.model_name]
     
     def load_data(self):

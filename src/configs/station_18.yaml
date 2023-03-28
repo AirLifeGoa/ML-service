@@ -1,10 +1,20 @@
-prophet_model:
+prophet:
   model_type: "prophet"
   interval_width: 0.95
-  days_ahead: 240
-  sps :  10.0
-  cps :  0.25
-  sm  : 'additive'
-  ws  : 'auto'
-  plot_range : False
-  plot_pred_test : False
+  days_ahead: 1365
+  sps: 10.0
+  cps: 0.25
+  sm: "additive"
+  ws: "auto"
+  plot_range: False
+  plot_pred_test: False
+
+lstm:
+  model_type: "lstm"
+  days_ahead: 14
+  epochs: 150
+  optimizer: "Adam"
+  loss_function: "MSE"
+  lr: 0.001
+  hidden_layers: [300, 100]
+  dropout: 0.5

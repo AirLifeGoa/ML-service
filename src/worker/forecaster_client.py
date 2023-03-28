@@ -7,18 +7,18 @@ from worker.workflow import Workflow
 
 class ForecasterClient:
 
-    def __init__(self, workflow: Workflow):
+    def __init__(self, datapoint, model_type, output):
         """
         Initialize forecaster.
 
         :param target: Name of the target for which forecaster is being initialized.
         :param config: Configuration for the forecaster.
         """
-        self.workflow = workflow
-        self.dataPoint = workflow.datapoint
-        self.model_type = workflow.model_name
-        self.output_config = workflow.output
-        self.initialize_trainer()
+        self.workflow = None
+        self.dataPoint = datapoint
+        self.model_type = model_type
+        self.output_config = output
+        
 
         print("Forecaster Client initiated")
 
@@ -35,14 +35,14 @@ class ForecasterClient:
         self.trainer = self.model_client
         return self.trainer
 
-    def train(self, train_data, test_data):
+    def train(self):
         """
         Train the model.
 
         :returns: model validation metrics.
         """
         metrics = None
-        model = self.trainer.train(train_data, test_data)
+        metrics = self.trainer.train(self.workflow.train_data, self.workflow.test_data)
 
         # if model is not None and scaler is not None:
         #     print("Model loaded successfully")
@@ -61,5 +61,10 @@ class ForecasterClient:
         )
 
         self.workflow.initialize_workflow()
+        self.initialize_trainer()
+
+        ##based on load_config check whether model already exists in mlflow or not.
+        ## if exists return true - do not train model only retrain
+        ##else return false - only train the model.
 
 

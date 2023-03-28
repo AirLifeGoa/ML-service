@@ -1,4 +1,6 @@
 from pymongo import MongoClient
+import sys
+sys.path.append(r'C:\Users\hp\Desktop\ML server\src')
 import numpy as np
 import pandas as pd
 import sys, os
@@ -27,7 +29,7 @@ class MongoLoader:
     def getDataPoints(self, query={}):     
         print(self.dataPoints)
         documents = list(self.sensor_connection.find(query))
-        print(documents[0])
+        print(documents)
         return documents[0]
                             
     def load_data(self,id):
@@ -44,19 +46,25 @@ class MongoLoader:
             {"$replaceRoot": { "newRoot": '$data', },},
             {"$sort": { "recordedAt": 1,},},
             {"$project": {"dataSourceId": False, "metadata": False, "__v": False, "_id": False, "uploadedBy": False}},
-            {"$project": unpack_data, }
+            {"$project": unpack_data, },
             # {
-            # "$project": {
-            #     "date": {
-            #         "$convert": {
-            #         "input": "$date",
-            #         "to": "timezone",
-            #         "timezone": "Asia/Kolkata"
+            #     "$project": {
+            #         "date": {
+            #             "$convert": {
+            #             "input": "$recordedAt",
+            #             "to": "date",
+            #             }
+            #         }
+            #     }
             # }
-#          }
-#       }
-#    }
             # {"$cond": [ { "$eq": ["$field", "value"] },"$filed",np.nan] }
+            {
+        '$addFields': {
+            'date': {
+                '$add': ['$date', 330*60*1000]
+            }
+        }
+    }
         ]
         result = list(self.data_connection.aggregate(pipeline))
         
@@ -70,4 +78,5 @@ class MongoLoader:
 
 if __name__ == "__main__":
     obj = MongoLoader()
-    obj.load_data(18)
+    df = obj.load_data(18)
+    print(df.tail())

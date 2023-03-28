@@ -1,0 +1,9 @@
+mlruns/
+temp.py
+hypertune.py
+mlartifacts/
+
+
+__pycache__/
+*.pyc
+*.py[cod]
