@@ -12,6 +12,7 @@ import mlflow
 from mlflow.tracking import MlflowClient
 from bson import ObjectId
 from aimodels.model_factory import ModelFactory
+from datetime import datetime
 # from util.helper_mlflow import getModelToServe
 from worker.workflow import Workflow
 from worker.forecaster_client import ForecasterClient
@@ -37,11 +38,17 @@ def train_model(id, model_name= "hybridlstm", ):
     # model_client = ForecasterClient(datapoint, model_name,output="PM10")
     # model_client.initialize_workflow()
     # error_metric = model_client.train()
+    error_metric =10
     # print(error_metric)
 
+    start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d")
+    end_date = datetime.datetime.strptime(end_date, "%Y-%m-%d")
+    
     inference_client = InferenceClient(datapoint, model_name, output="PM10")
     inference_client.initialize_workflow()
-    predictions = inference_client.forecast(None, None, None)
-    inference_client.model_client.save_data(predictions, id)
+    predictions = inference_client.forecast(start_date,)
+    # inference_client.model_client.save_data(predictions, id)
 
-train_model("1")
+    return error_metric
+
+train_model("5")

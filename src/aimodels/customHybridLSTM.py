@@ -306,7 +306,7 @@ class CustomHybridLSTM(BaseModel):
         print(self.datasource_name)
         plt.legend()
         plt.savefig(f"./save_plots/{self.datasource_name}_hybrid_lstmpredicitions.png")
-        plt.show()
+        # plt.show()
 
     def save_model(self, prophet_model, lstm_model):
         try: 
@@ -407,6 +407,7 @@ class CustomHybridLSTM(BaseModel):
         if end_date == None:
             end_date = start_date + timedelta(days_ahead)
 
+       
         if test_inputs:
             lstm_final_test_x, lstm_final_test_y = test_inputs[0], test_inputs[1]
             print(lstm_final_test_x.shape, len(lstm_final_test_x))
@@ -434,13 +435,13 @@ class CustomHybridLSTM(BaseModel):
                 x_batch = torch.tensor(inpt,dtype=torch.float32)   
                 model.init_hidden(x_batch.size(0))
                 output = model(x_batch)
-                print(output)
+                # print(output)
                 pred.append(output.view(-1))
         
         actual_predictions = np.array(pred)
 
         
-        days = pd.date_range(start_date, start_date + timedelta(days_ahead-1), freq='D')
+        days = pd.date_range(end_date - timedelta(days=days_ahead-1), end_date, freq='D')
         # print(lstm_final_test_x)
 
         preds = pd.DataFrame({'date': days, self.data_factory.output: actual_predictions})
@@ -460,7 +461,12 @@ class CustomHybridLSTM(BaseModel):
 
             print(scaled_test_inputs.shape, preds_numpy.shape)
             z = np.append(scaled_test_inputs[:-7,:-1],preds_numpy,axis = 1)
-            rescaled_prediction_data = scaler.inverse_transform(z)[:,-1]   
+            rescaled_prediction_data = scaler.inverse_transform(z)[:,-1]  
+
+            preds = pd.DataFrame({'date': days, self.data_factory.output: rescaled_prediction_data})
+            preds = preds.set_index('date')
+            preds = preds[preds.index >= pd.to_datetime(start_date)] 
+            return preds 
 
         preds = pd.DataFrame({'date': days, self.data_factory.output: rescaled_prediction_data})
         print(preds)
@@ -469,7 +475,7 @@ class CustomHybridLSTM(BaseModel):
     def save_data(self, data, datasource_id= None):
         if datasource_id == None:
             datasource_id = self.datasourceId
-
+        upload_data_to_db(data, "hybridlstm", datasource_id)
 
 
         # upload_data_to_db(data, "lstm", datasource_id)

@@ -23,14 +23,28 @@ class MongoLoader:
         self.client = MongoClient(mongodb_uri, port)
         print(self.dataPoints)
         self.db_connection = self.client[self.db_name]
-        self.sensor_connection = self.db_connection[self.dataPoints]
+        self.datasource_connection = self.db_connection[self.dataPoints]
         self.data_connection = self.db_connection[self.pollutiondata]
 
     def getDataPoints(self, query={}):     
         print(self.dataPoints)
-        documents = list(self.sensor_connection.find(query))
+        documents = list(self.datasource_connection.find(query))
         print(documents)
         return documents[0]
+
+    def getDataAllSources(self):
+
+        try:
+            dataSources = list(self.datasource_connection.find({}))
+
+            dataSourcesList = []
+
+            for source in dataSources:
+                dataSourcesList.append(source["name"])
+            
+            return dataSourcesList
+        except:
+            return []
                             
     def load_data(self,id):
 

@@ -114,11 +114,16 @@ class CustomLSTM(BaseModel):
 
         last_training_point = np.array(self.train_data[-1][0].tolist() + self.train_data[-1][1].tolist()).reshape(-1)
         
+        print(self.test_data)
         last_training_point = list(last_training_point)
-        prediction_data = self.inference(self.model,last_training_point[1:], len(test_data))
+        prediction_data = self.inference(self.model,last_training_point[1:], (self.test_data.index.max() - self.test_data.index.min()).days+4, start_date= self.test_data.index.min()-timedelta(days=1), end_date= self.test_data.index.max(), from_train=True)
+        print(prediction_data)
+        common_index = prediction_data.index.intersection(self.test_data.index)
+        prediction_data = prediction_data.loc[common_index]
+
+        print("Number of samples: ", len(prediction_data), len(self.test_data))
         error_metric = self.evaluate(self.test_data, prediction_data)
 
-        
         self.save_plots(prediction_data, test_data)
         self.train_and_save_full_model()
         print(error_metric)
@@ -168,7 +173,7 @@ class CustomLSTM(BaseModel):
         plt.plot(test_data.index, prediction_data)
         print(self.datasource_name)
         plt.savefig(f"./save_plots/{self.datasource_name}/lstm/predicitions.png")
-        plt.show()
+        # plt.show()
 
     def save_model(self, model):
         try: 
@@ -206,7 +211,7 @@ class CustomLSTM(BaseModel):
         mlflow.end_run()
    
     
-    def inference(self, model: LSTM, test_inputs: list, days_ahead = 50, start_date = datetime.now().date(), end_date = None,):
+    def inference(self, model: LSTM, test_inputs: list, days_ahead = 50, start_date = datetime.now().date(), end_date = None, from_train = False):
         """
         This function do predictions for given number of days ahead
 
@@ -215,6 +220,16 @@ class CustomLSTM(BaseModel):
             test_inputs (list): this is the last training datapoint 
             days_ahed (int): Number of days forecasts needs to be done
         """
+        # if start_date != None and end_date != None:
+        #     days_ahead = end_date - start_date
+
+        if start_date == None:
+            start_date = datetime.now().date()
+        if days_ahead == None:
+            days_ahead = 50
+        if end_date == None:
+            end_date = start_date + timedelta(days_ahead)
+
         print(start_date)
         print(days_ahead)
         model.eval()
@@ -228,11 +243,12 @@ class CustomLSTM(BaseModel):
 
         actual_predictions = self.data_factory.scalar.inverse_transform(np.array(test_inputs[self.window_size:] ).reshape(1, -1))[0]
 
-        days = pd.date_range(start_date, start_date + timedelta(days_ahead-1), freq='D')
+        days = pd.date_range(end_date - timedelta(days=days_ahead-1), end_date, freq='D')
         print(len(actual_predictions), days_ahead, len(days))
 
         preds = pd.DataFrame({'date': days, self.data_factory.output: actual_predictions})
         preds = preds.set_index('date')
+        preds = preds[preds.index >= pd.to_datetime(start_date)] 
         print(preds.head())
         return preds
     
