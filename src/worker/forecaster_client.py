@@ -3,6 +3,7 @@ import warnings
 
 from aimodels.model_factory import ModelFactory
 from worker.workflow import Workflow
+from data_loader import mongodb_loader
 
 
 class ForecasterClient:
@@ -47,7 +48,6 @@ class ForecasterClient:
         # if model is not None and scaler is not None:
         #     print("Model loaded successfully")
         #     metrics = self.trainer.validate()
-
         return metrics
 
     def initialize_workflow(self):

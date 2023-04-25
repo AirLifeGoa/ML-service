@@ -5,3 +5,4 @@ pollutionDB = 'test'
 dataPointsCollection = "datapoints"
 dataLogsCollection = "datalogs"
 pollutionDataCollection = "pollutiondatas"
+modelLogs = "modellogs"

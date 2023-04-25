@@ -79,19 +79,25 @@ def getDataSourceList() -> List[str]:
     return datapoint
 
 datasources = getDataSourceList()
+MODELS_LIST = ["prophet", "lstm", "hybridlstm"]
+METRIC_LIST = ["PM10", "PM25"]
 
 class InferenceInput(BaseModel):
     start_date: date
     end_date: date
     save_predictions: bool
     station:  Literal[tuple(datasources)] = datasources[0]
+    model_name: Literal[tuple(MODELS_LIST)] = MODELS_LIST[0]
+    metric: Literal[tuple(METRIC_LIST)] = METRIC_LIST[0]
+
 
 class ForecastInput(BaseModel):
-    model_name: str
+    metric: Literal[tuple(METRIC_LIST)] = METRIC_LIST[0]
+    model_name: Literal[tuple(MODELS_LIST)] = MODELS_LIST[0]
     station:  Literal[tuple(datasources)] = datasources[0]
 
 
-@alg_model_mngmt.post("/forecast")
+@alg_model_mngmt.post("/inference")
 def inference( data: InferenceInput = Depends()):
 
     ## TODO get bestmodel from DB currently hardcodeded
@@ -103,9 +109,11 @@ def inference( data: InferenceInput = Depends()):
     end_date = data.end_date
     
     print("Dates: ", start_date, end_date)
-    inference_client = InferenceClient(datapoint, "prophet", output="PM10")
+    # inference_client = InferenceClient(datapoint, "prophet", output="PM25")
+    inference_client = InferenceClient(datapoint, data.model_name, output=data.metric)
     inference_client.initialize_workflow()
     predictions = inference_client.forecast(start_date,end_date)
+
 
     if data.save_predictions:
         print("saving..............")
@@ -119,16 +127,7 @@ def inference( data: InferenceInput = Depends()):
     return predictions
 
 
-
-# @alg_model_mngmt.patch("/hypertune/sensor/{id}")
-# def hypertune(id: int, ):
-
-# from mlflow.tracking import ml
-
-# db.c
-
-
-@alg_model_mngmt.get("/forecast/{station_name}")
+@alg_model_mngmt.post("/forecast")
 def train_model(data: ForecastInput = Depends(), model_name : str= "prophet"):
 
     data_loader = MongoLoader()
@@ -140,12 +139,13 @@ def train_model(data: ForecastInput = Depends(), model_name : str= "prophet"):
     # current_model_workflow = Workflow(dataPoint=datapoint, model_name=model_name, output="PM10")
     # current_model_workflow.initialize_workflow()
     #get output from config file
-
-    model_client = ForecasterClient(datapoint, data.model_name,output="PM10")
+    model_client = ForecasterClient(datapoint, data.model_name,output=data.metric)
     model_client.initialize_workflow()
     error_metric = model_client.train()
-    print(error_metric)
-
+    # error_metric =  {'RMSE': 20.25665490801275, 'MAE': 16.232658153444934}
+    print("error metric",error_metric)
+    error_data = {model_name: error_metric['RMSE']}
+    model_client.workflow.update_model_logs(error_data, output=data.metric)
     # print(current_model_workflow.test_data.tail(), current_model_workflow.test_data.head(), current_model_workflow.train_data.tail())
     # print(current_model_workflow.__dict__)
     # model_client = ForecasterClient(current_model_workflow)

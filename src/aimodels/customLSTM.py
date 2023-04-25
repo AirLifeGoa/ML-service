@@ -133,6 +133,7 @@ class CustomLSTM(BaseModel):
         #save model using mlflow 
         #create model here then pass it save model function.
         model, loss_function, optimizer = self.build_model()
+        training_preds = []
         print(self.data_factory.full_data[0])
         for i in range(self.epochs):
             for seq, labels in self.data_factory.full_data:
@@ -146,11 +147,17 @@ class CustomLSTM(BaseModel):
                 single_loss.backward()
                 optimizer.step()
 
+                if (i+1 == self.epochs):
+                    training_preds.append(float(y_pred.detach().numpy()))
+
             if i%25 == 1:
                 print(f'epoch: {i:3} loss: {single_loss.item():10.8f}')
 
         print(f'epoch: {i:3} loss: {single_loss.item():10.10f}')
         self.save_model(model)
+
+        training_preds = self.get_training_predictions(training_preds)
+        self.save_data(training_preds)
 
     def evaluate(self,actual_data, prediction_data):
         """
@@ -172,7 +179,7 @@ class CustomLSTM(BaseModel):
         plt.plot(test_data)
         plt.plot(test_data.index, prediction_data)
         print(self.datasource_name)
-        plt.savefig(f"./save_plots/{self.datasource_name}/lstm/predicitions.png")
+        plt.savefig(f"./save_plots/lstm/predicitions.png")
         # plt.show()
 
     def save_model(self, model):
@@ -209,6 +216,17 @@ class CustomLSTM(BaseModel):
         mlflow.log_param("model_trained", True)
         # mlflow.log_artifact(f"./save_plots/{self.datasource_name}/lstm/predicitions.png",artifact_path="plots")
         mlflow.end_run()
+    
+    def get_training_predictions(self,y_preds):
+        
+        print(self.data_factory.raw_data, len(y_preds))  
+        preds_org = self.data_factory.raw_data.copy()[self.window_size:]
+        y_preds = self.data_factory.scalar.inverse_transform(np.array(y_preds ).reshape(1, -1))[0]
+        print(y_preds)
+        preds_org[self.data_factory.output] = np.array(y_preds)
+        preds_org = preds_org[[self.data_factory.output]]
+        print(preds_org)  
+        return preds_org
    
     
     def inference(self, model: LSTM, test_inputs: list, days_ahead = 50, start_date = datetime.now().date(), end_date = None, from_train = False):

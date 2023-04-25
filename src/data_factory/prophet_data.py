@@ -11,6 +11,8 @@ class ProphetData:
         # df = pd.read_csv(r"./../data/combined revised data 2016-2021.csv", index_col=['Date'],
         #                 parse_dates=True, dayfirst=True)
 
+        print(output)
+        print(data)
         self.output = output
         
         df = data

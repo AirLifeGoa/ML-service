@@ -27,8 +27,8 @@ class HybridLSTMData:
         # Train-Test Splitting
         # train_end = datetime(2020, 6, 29)
         # test_end = datetime(2021, 2, 22)
-
         data_temp = data.set_index('ds')
+        self.raw_data = data_temp.copy()
         split_index = int(len(data_temp)*0.85)
         print(data_temp.head ,split_index, data_temp.index[split_index])
         train_end = data_temp.index[split_index]

@@ -30,6 +30,7 @@ class MLflowUtils():
     def load_model(self, datasource_name, model_type, output):
         print(model_type)
         try:
+            self.model_uri = f"models:/{datasource_name}_{output}_{model_type}/latest"
             mlflow.set_tracking_uri(self.mlflow_uri)
             model_flavor = self.get_model_flavour(model_type)
             model = model_flavor.load_model(model_uri=f"models:/{datasource_name}_{output}_{model_type}/latest")
@@ -38,6 +39,10 @@ class MLflowUtils():
         except Exception as err:
             print(err)
             return "Unable to load model"
+        
+    # def load_scalar()
+    
+
 
 if __name__ == "__main__":
     obj = MLflowUtils()

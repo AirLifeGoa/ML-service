@@ -205,7 +205,7 @@ class AdvanceProphet(BaseModel):
             else:
                 plt.plot(pred_org, color='#ebd500', label='Predicted (lockdown as changepoints)')
             
-            return {"RMSE Error: " :error_rmse ,"MAE Error: ": error_mae}
+            return {"RMSE" :error_rmse ,"MAE": error_mae}
         # except:
         #     print('Error occured while building model!!!')
     
@@ -231,8 +231,24 @@ class AdvanceProphet(BaseModel):
             model.add_country_holidays('IN')
 
         model.fit(full_data)
+
+        training_preds = self.get_training_predictions(model)
+        self.save_data(training_preds)
         model_info = mlflow.prophet.log_model(model, artifact_path="model", registered_model_name=f"{self.datasource_name}_{self.data_factory.output}_prophet")
         print(model_info)
+
+    def get_training_predictions(self, model: Prophet):
+        
+        future_dates = model.make_future_dataframe(periods=0, include_history=True)
+        print(future_dates)
+        predictions = model.predict(future_dates)
+
+        pred_org = predictions[['ds', 'yhat']].set_index('ds')
+        pred_org = pred_org.rename(columns={'yhat': self.data_factory.output}) 
+       
+        print(pred_org)
+        return pred_org
+    
 
     def inference(self, model: Prophet, test_inputs: list = None, days_ahead = None, start_date = None ,  end_date = None, from_train = False):
         
@@ -260,7 +276,7 @@ class AdvanceProphet(BaseModel):
     def save_data(self, data, datasource_id= None):
         if datasource_id == None:
             datasource_id = self.station_id
-        upload_data_to_db(data, "hybridlstm", datasource_id)
+        upload_data_to_db(data, "prophet", datasource_id)
 
 
 if __name__=="__main__":

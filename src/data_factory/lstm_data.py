@@ -24,6 +24,7 @@ class LSTMData:
         test_end = datetime(2021,2,22)
 
         print(data.head() , data.shape) 
+        self.raw_data = data.copy()
         train_data,self.test_data = self.split_train_test(data)
         print(train_data.shape, self.test_data.shape)
         train_data  = self.scale_data(train_data)

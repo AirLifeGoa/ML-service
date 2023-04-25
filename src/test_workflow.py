@@ -35,20 +35,22 @@ def train_model(id, model_name= "hybridlstm", ):
 
     # print(current_model_workflow.train_data[-1])
     # print(current_model_workflow.config)
-    # model_client = ForecasterClient(datapoint, model_name,output="PM10")
-    # model_client.initialize_workflow()
+    model_client = ForecasterClient(datapoint, model_name,output="PM10")
+    model_client.initialize_workflow()
+    # model_client.workflow
+    model_client.workflow.update_model_logs({},"PM10")
     # error_metric = model_client.train()
-    error_metric =10
+    # error_metric =10
     # print(error_metric)
 
-    start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d")
-    end_date = datetime.datetime.strptime(end_date, "%Y-%m-%d")
+    # start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d")
+    # end_date = datetime.datetime.strptime(end_date, "%Y-%m-%d")
     
-    inference_client = InferenceClient(datapoint, model_name, output="PM10")
-    inference_client.initialize_workflow()
-    predictions = inference_client.forecast(start_date,)
+    # inference_client = InferenceClient(datapoint, model_name, output="PM10")
+    # inference_client.initialize_workflow()
+    # predictions = inference_client.forecast(start_date,)
     # inference_client.model_client.save_data(predictions, id)
 
-    return error_metric
+    return ""
 
-train_model("5")
+train_model("6")

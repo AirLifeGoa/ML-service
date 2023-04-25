@@ -190,6 +190,7 @@ class CustomHybridLSTM(BaseModel):
         #training starts here
 
         model.train()
+        training_preds = []
         for i in range(1, self.epochs+1):
             for b in range(0,len(train_data_x), self.batch_size):
                 inpt = train_data_x[b:b+self.batch_size,:,:]
@@ -204,13 +205,15 @@ class CustomHybridLSTM(BaseModel):
                 loss.backward()
                 optimizer.step()        
                 optimizer.zero_grad()
+                if i == self.epochs:
+                    training_preds.append(output.view(-1).detach().numpy())
 
             if i%25 == 1:
                 print(f'epoch: {i:3} loss: {loss.item():10.8f}')
 
         print(f'epoch: {i:3} loss: {loss.item():10.10f}')
 
-        return  model
+        return  model, np.array(training_preds)
 
     def rescale_data(self, preds, lstm_test_transformed):
         pred_numpy = np.array(preds)
@@ -243,7 +246,7 @@ class CustomHybridLSTM(BaseModel):
         lstm_final_test =  self.split_sequences(lstm_test_transformed, self.window_size)
         print("testing dataset size :",lstm_final_test[0].shape)
 
-        self.model = self.train_lstm(lstm_final_train_x, lstm_final_train_y)
+        self.model, _ = self.train_lstm(lstm_final_train_x, lstm_final_train_y)
         self.lstm_test_transformed = lstm_test_transformed 
         
         # print(prophet_predictions.ds.values[-1].astype('datetime64[s]').astype('O'),type(prophet_predictions.ds.values[-1].astype('datetime64[s]').astype('O')))
@@ -279,10 +282,16 @@ class CustomHybridLSTM(BaseModel):
         lstm_final_train_x, lstm_final_train_y = self.split_sequences(lstm_train_transformed, self.window_size)
         print(lstm_final_train_x.shape)
 
-        lstm_model = self.train_lstm(lstm_final_train_x, lstm_final_train_y)
+        lstm_model, training_preds = self.train_lstm(lstm_final_train_x, lstm_final_train_y)
 
-        self.save_model(prophet_model = prophet_model, lstm_model = lstm_model )
+        self.save_model(prophet_model = prophet_model, lstm_model = lstm_model )       
 
+        dummy_data = lstm_train_transformed.copy()[7:,:-1]
+        preds_numpy  = np.array(training_preds).reshape((-1,1))
+        z = np.append(dummy_data,preds_numpy,axis = 1)
+        rescaled_prediction_data = self.std.inverse_transform(z)[:,-1] 
+        full_training_preds_df =self.get_training_preds(rescaled_prediction_data)
+        self.save_data(full_training_preds_df)
     
     def evaluate(self,actual_data, prediction_data):
         """
@@ -389,6 +398,15 @@ class CustomHybridLSTM(BaseModel):
             print("File removed: ", "scaler.pkl")
 
         return lstm_model , prophet_model, scaler
+
+    def get_training_preds(self, y_preds):
+
+        print(self.data_factory.raw_data, len(y_preds))  
+        preds_org = self.data_factory.raw_data.copy()[self.window_size-1:]
+        preds_org[self.data_factory.output] = np.array(y_preds)
+        preds_org = preds_org[[self.data_factory.output]]
+        print(preds_org)  
+        return preds_org
 
     def inference(self, model: MV_LSTM, test_inputs: list = None, days_ahead = None, start_date = None ,  end_date = None, from_train = False):
         """
