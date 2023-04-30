@@ -1,3 +1,4 @@
+
 prophet:
   model_type: "prophet"
   interval_width: 0.95
@@ -9,11 +10,10 @@ prophet:
   plot_range: False
   plot_pred_test: False
 
-
 lstm:
   model_type: "lstm"
   days_ahead: 14
-  epochs: 10
+  epochs: 150
   optimizer: "Adam"
   loss_function: "MSE"
   lr: 0.001
@@ -23,7 +23,7 @@ lstm:
 hybridlstm:
   model_type: "hybridlstm"
   days_ahead: 14
-  epochs: 5
+  epochs: 150
   optimizer: "Adam"
   loss_function: "MSE"
   lr: 0.001

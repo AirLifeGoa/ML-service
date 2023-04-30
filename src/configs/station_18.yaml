@@ -1,3 +1,4 @@
+
 prophet:
   model_type: "prophet"
   interval_width: 0.95
@@ -18,3 +19,16 @@ lstm:
   lr: 0.001
   hidden_layers: [300, 100]
   dropout: 0.5
+
+hybridlstm:
+  model_type: "hybridlstm"
+  days_ahead: 14
+  epochs: 150
+  optimizer: "Adam"
+  loss_function: "MSE"
+  lr: 0.001
+  hidden_layers: [300, 100]
+  dropout: 0.5
+  weight_decay: 0.1
+  window_size: 8
+  batch_size: 1
