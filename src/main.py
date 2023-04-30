@@ -91,7 +91,7 @@ class InferenceInput(BaseModel):
 
 class ForecastInput(BaseModel):
     metric: Literal[tuple(METRIC_LIST)] = METRIC_LIST[0]
-    model_name: Literal[tuple(MODELS_LIST)] = MODELS_LIST[0]
+    model_name: Literal[tuple(MODELS_LIST)] = "lstm"
     station:  Literal[tuple(datasources)] = datasources[0]
 
 
