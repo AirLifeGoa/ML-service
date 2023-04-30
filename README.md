@@ -12,7 +12,7 @@ Air pollution is a critical environmental problem that poses a significant risk 
 
 ## API Architecture
 The figure above shows the architecture of the ML Server. The ML Server is written in Python and it uses Pollution DB and MLflow service for easy serving of models. The FastApi framework is used for developing the ML Server.
-
+![ML Server Architecture + Workflow ](https://github.com/AirLifeGoa/ML-service/blob/main/architecture_workflow.png)
 The image describes the overall architecture of the server. There is a cron job running in the server called DynamicModelTrainer which queries the pollution DB at regular intervals. If there is any new data available to train the model, the DynamicModelTrainer immediately makes an API request to the server to train the model for a particular data source.
 
 At present, the server has only two API routes: Training and Inference. The API documentation is given [here](#API-Reference). 
