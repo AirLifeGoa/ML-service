@@ -84,5 +84,14 @@ This API calls is used for making forecasts on the trained models.
 | `station` | `string` | **Required** Select the datasource to train model |
 | `save_predictions`      | `string` | **Required** Boolean value, saves predictions to DB if set true |
 
+## Contributing
 
+We welcome contributions of any size! please follow the below link of google docs to get more info about taking on new tasks.
+
+Future Extension(#)
+
+Got stuck. For any more info contact us
+
+Divyansh K - 6204991800 or mail at - me@divyanx.com        
+Pranav B - 9390062480  or mail at - pranavbalijapelly@gmail.com
 
