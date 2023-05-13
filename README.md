@@ -90,9 +90,7 @@ This API calls is used for making forecasts on the trained models.
 
 ## Contributing
 
-We welcome contributions of any size! please follow the below link of google docs to get more info about taking on new tasks.
-
-Future Extension(#)
+We welcome contributions of any size! please follow the github issues page to get more info about taking on new tasks.
 
 Got stuck. For any more info contact us
 
