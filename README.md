@@ -26,6 +26,10 @@ As the final steps, the entire model logs, including errors, parameters, and mod
 
 ### Inference workflow
  Making forecasts is straightforward. The first step is to initialize the inference client, which takes care of any test input data requirements. Then it loads the scaler (if used during model training) and the model from MLflow. Afterward, forecasts are made for a given time period, and predictions are saved in the DB.
+
+## CodeBase walkthrough 
+The walkthrough video for entire codebase is uploaded in the AirLifeGoa youtube channel [here](https://www.youtube.com/@AirLifeGoa). 
+ 
 ## Installation
 
 Conda Environment setup 
@@ -92,6 +96,6 @@ Future Extension(#)
 
 Got stuck. For any more info contact us
 
-Divyansh K - 6204991800 or mail at - me@divyanx.com        
-Pranav B - 9390062480  or mail at - pranavbalijapelly@gmail.com
+Divyansh K - 6 two O 4 Nine Nine ! Eight 0 O or mail at - me@divyanx.com        
+Pranav B - 9 Three 9 0 O Six 2 Four 8 Zero  or mail at - pranavbalijapelly@gmail.com
 
